@@ -1,6 +1,20 @@
+const Task = require('./models/Task')
+
 const resolvers = {
     Query: {
-        hello: () => 'Hello Word'
+        hello: () => 'Hello Word',
+        getAllTasks: async () => {
+            const tasks = await Task.find()
+            return tasks
+        }
+    },
+    Mutation: {
+        createTask: async (_, args) => {
+            const {title, description} = args
+            const newTask = new Task({title, description})
+            await newTask.save()
+            return newTask
+        }
     }
 }
 

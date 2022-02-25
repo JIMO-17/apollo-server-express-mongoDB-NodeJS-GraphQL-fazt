@@ -4,7 +4,10 @@ const { ApolloServer } = require("apollo-server-express");
 const { typeDefs } = require('./typeDefs');
 const { resolvers } = require('./resolvers');
 
+const { connectDB } = require('./db')
+
 const app = express();
+connectDB()
 
 app.get('/', (req, res) => res.send('Welcome to my api'))
 
@@ -17,7 +20,7 @@ async function start(){
     await apolloServer.start()
     
     apolloServer.applyMiddleware({app})
-    
+
     app.get('*', (req, res) => res.status(404).send('Not found'))
 
     app.listen(3000, ()=> {

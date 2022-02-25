@@ -15,10 +15,18 @@ const resolvers = {
     },
     Mutation: {
         createTask: async (_, args) => {
-            const {title, description} = args
+            const {title, description} = args.task
             const newTask = new Task({title, description})
             await newTask.save()
             return newTask
+        },
+        async deleteTask(_, {id}) {
+            await Task.findByIdAndDelete(id);
+            return `Task deleted with id: ${id}`
+        },
+        async updateTask(_, {task, id}){
+            const updateTask = await Task.findByIdAndUpdate(id, {$set: task}, {new: true})
+            return updateTask
         }
     }
 }
